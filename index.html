@@ -1,44 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>PHP WkHtmlToPdf by mikehaertl</title>
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/respond.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!--[if lt IE 8]>
-    <link rel="stylesheet" href="stylesheets/ie.css">
-    <![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="PHP WkHtmlToPdf : A slim PHP wrapper around wkhtmltopdf with an easy to use and clean OOP interface" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>PHP WkHtmlToPdf</title>
   </head>
+
   <body>
 
-      <div id="header">
-        <nav>
-          <li class="fork"><a href="https://github.com/mikehaertl/phpwkhtmltopdf">Fork On GitHub</a></li>
-          <li class="downloads"><a href="https://github.com/mikehaertl/phpwkhtmltopdf/zipball/master">ZIP</a></li>
-          <li class="downloads"><a href="https://github.com/mikehaertl/phpwkhtmltopdf/tarball/master">TAR</a></li>
-          <li class="title">DOWNLOADS</li>
-        </nav>
-      </div><!-- end header -->
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/mikehaertl/phpwkhtmltopdf">View on GitHub</a>
 
-    <div class="wrapper">
+          <h1 id="project_title">PHP WkHtmlToPdf</h1>
+          <h2 id="project_tagline">A slim PHP wrapper around wkhtmltopdf with an easy to use and clean OOP interface</h2>
 
-      <section>
-        <div id="title">
-          <h1>PHP WkHtmlToPdf</h1>
-          <p>A slim PHP wrapper around wkhtmltopdf with an easy to use and clean OOP interface</p>
-          <hr>
-          <span class="credits left">Project maintained by <a href="https://github.com/mikehaertl">mikehaertl</a></span>
-          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
-        </div>
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/mikehaertl/phpwkhtmltopdf/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/mikehaertl/phpwkhtmltopdf/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
 
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
         <p>PHP WkHtmlToPdf provides a simple and clean interface to ease PDF creation with <a href="http://code.google.com/p/wkhtmltopdf/">wkhtmltopdf</a>.
 The <a href="http://code.google.com/p/wkhtmltopdf/">wkhtmltopdf</a> binary must be installed and working on your system. The static
 binary is preferred but this class should also work with the non static version,
@@ -48,59 +40,51 @@ even though a lot of features will be missing.</p>
 
 <h2>Basic use</h2>
 
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">require_once</span><span class="p">(</span><span class="s1">'WkHtmlToPdf.php'</span><span class="p">);</span>
 
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">;</span>
+
+<span class="c1">// Add a HTML file, a HTML string, a page from URL or a PDF file</span>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'/home/joe/page.html'</span><span class="p">);</span>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'&lt;html&gt;....&lt;/html&gt;'</span><span class="p">);</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'http://google.com'</span><span class="p">);</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'/home/joe/my.pdf'</span><span class="p">);</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addCover</span><span class="p">(</span><span class="s1">'mycover.pdf'</span><span class="p">);</span>
+
+<span class="c1">// Add a cover (same sources as above are possible)</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addToc</span><span class="p">();</span>
 
-<span class="c1">// Save the PDF</span>
+<span class="c1">// Save the PDF, or ...</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">saveAs</span><span class="p">(</span><span class="s1">'/tmp/new.pdf'</span><span class="p">);</span>
 
-<span class="c1">// Send to client for inline display</span>
+<span class="c1">// ... send to client for inline display, or ...</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 
-<span class="c1">// Send to client as file download</span>
+<span class="c1">// ... send to client as file download</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">'test.pdf'</span><span class="p">);</span>
-</pre>
-</div>
-
+</pre></div>
 
 <h2>Setting options</h2>
 
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
+<p>The wkhtmltopdf binary has some global options (e.g. to set the document's DPI) and options for each PDF page (e.g. to supply a custom CSS file). Please see "wkhtmltopdf -H" to get a list of all available options.</p>
+
+<p>In addition <code>phpwkhtmltopdf</code> also supports global page options: You can set default page options that will be applied to every page you add. You can also override these defaults per page:</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>   <span class="c1">// Set global PDF options</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>         <span class="c1">// Set global PDF options (alternative)</span>
-<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setPageOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Set global default page options</span>
-<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="nv">$page</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Set page options (overrides defaults)</span>
-</pre>
-</div>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setPageOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Set default page options</span>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="nv">$page</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Add page with options (overrides default page options)</span>
+</pre></div>
 
+<h2>Special global options</h2>
 
-<h3>Example options</h3>
-
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
-<span class="c1">// See "wkhtmltopdf -H" for all available options</span>
-<span class="nv">$options</span><span class="o">=</span><span class="k">array</span><span class="p">(</span>
-    <span class="s1">'no-outline'</span><span class="p">,</span>
-    <span class="s1">'margin-top'</span>    <span class="o">=&gt;</span><span class="mi">0</span><span class="p">,</span>
-    <span class="s1">'margin-right'</span>  <span class="o">=&gt;</span><span class="mi">0</span><span class="p">,</span>
-<span class="p">);</span>
-</pre>
-</div>
-
-
-<h3>Extra global options</h3>
+<p>You can use these special global options to set up some file paths:</p>
 
 <ul>
 <li>bin: path to the wkhtmltopdf binary. Defaults to <code>/usr/bin/wkhtmltopdf</code>.</li>
-<li>tmp: path to tmp directory. Defaults to PHP temp dir.</li>
+<li>tmp: path to tmp directory. Defaults to the PHP temp dir.</li>
 </ul><h2>Error handling</h2>
 
 <p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>.</p>
@@ -111,8 +95,7 @@ even though a lot of features will be missing.</p>
 But then i had scaling issues which went away if i set all margins to zero and instead
 add the margins through CSS. We can also use <code>cm</code> in CSS as this is more apropriate for print styles.</p>
 
-<div class="highlight">
-<pre><span class="cp">&lt;?php</span>
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
     <span class="s1">'no-outline'</span><span class="p">,</span>         <span class="c1">// Make Chrome not complain</span>
     <span class="s1">'margin-top'</span>    <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
@@ -129,14 +112,11 @@ add the margins through CSS. We can also use <code>cm</code> in CSS as this is m
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'demo.html'</span><span class="p">);</span>
 
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p><strong>demo.html</strong></p>
 
-<div class="highlight">
-<pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>
@@ -156,14 +136,11 @@ add the margins through CSS. We can also use <code>cm</code> in CSS as this is m
 
 <span class="nt">&lt;/body&gt;</span>
 <span class="nt">&lt;/html&gt;</span>
-</pre>
-</div>
-
+</pre></div>
 
 <p><strong>pdf.css</strong></p>
 
-<div class="highlight">
-<pre><span class="c">/* Define page size. Requires print-area adjustment! */</span>
+<div class="highlight"><pre><span class="c">/* Define page size. Requires print-area adjustment! */</span>
 <span class="nt">body</span> <span class="p">{</span>
     <span class="k">margin</span><span class="o">:</span>     <span class="m">0</span><span class="p">;</span>
     <span class="k">padding</span><span class="o">:</span>    <span class="m">0</span><span class="p">;</span>
@@ -196,13 +173,18 @@ add the margins through CSS. We can also use <code>cm</code> in CSS as this is m
 
     <span class="k">background</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
 <span class="p">}</span>
-</pre>
-</div>
-
+</pre></div>
       </section>
-
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">PHP WkHtmlToPdf maintained by <a href="https://github.com/mikehaertl">mikehaertl</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -213,6 +195,7 @@ add the margins through CSS. We can also use <code>cm</code> in CSS as this is m
             pageTracker._trackPageview();
             } catch(err) {}
           </script>
+
 
   </body>
 </html>
