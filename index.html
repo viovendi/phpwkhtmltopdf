@@ -80,14 +80,22 @@ even though a lot of features will be missing.</p>
 
 <h2>Special global options</h2>
 
-<p>You can use these special global options to set up some file paths:</p>
-
 <ul>
-<li>bin: path to the wkhtmltopdf binary. Defaults to <code>/usr/bin/wkhtmltopdf</code>.</li>
-<li>tmp: path to tmp directory. Defaults to the PHP temp dir.</li>
+<li>
+<code>bin</code>: Path to the wkhtmltopdf binary. Defaults to <code>/usr/bin/wkhtmltopdf</code>.</li>
+<li>
+<code>tmp</code>: Path to tmp directory. Defaults to the PHP temp dir.</li>
+<li>
+<code>enableEscaping</code>: Wether arguments to wkhtmltopdf should be escaped. Default is true. </li>
 </ul><h2>Error handling</h2>
 
 <p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>.</p>
+
+<h2>Note for Windows users</h2>
+
+<p>If you use double quotes (<code>"</code>) or percent signs (<code>%</code>) as option values, they may get converted to spaces. You can set <code>enableEscaping</code> to false in this case. But then you have to take care of proper escaping yourself. In some cases it may be neccessary to surround your argument values with extra double quotes.</p>
+
+<p>I also found that some options don't work on Windows (tested with wkhtmltopdf 0.11 rc2), like the <code>user-style-sheet</code> option described below.</p>
 
 <h2>Full example</h2>
 
