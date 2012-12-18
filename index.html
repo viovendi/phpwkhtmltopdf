@@ -68,7 +68,7 @@ even though a lot of features will be missing.</p>
 
 <h2>Setting options</h2>
 
-<p>The wkhtmltopdf binary knows different types of options (please see wkhtmltopdf -H):                                      </p>
+<p>The wkhtmltopdf binary knows different types of options (please see <code>wkhtmltopdf -H</code>):                                      </p>
 
 <ul>
 <li>global options (e.g. to set the document's DPI)<br>
@@ -102,8 +102,8 @@ even though a lot of features will be missing.</p>
 <p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>:</p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
-<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span>                                                                                                    
-    <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'Could not create PDF: '</span><span class="o">.</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">getError</span><span class="p">());</span>                                                  
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span>
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'Could not create PDF: '</span><span class="o">.</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">getError</span><span class="p">());</span>
 </pre></div>
 
 <h2>Note for Windows users</h2>
