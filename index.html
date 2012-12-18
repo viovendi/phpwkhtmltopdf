@@ -45,37 +45,47 @@ even though a lot of features will be missing.</p>
 
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">;</span>
 
-<span class="c1">// Add a HTML file, a HTML string, a page from URL or a PDF file</span>
+<span class="c1">// Add a HTML file, a HTML string or a page from a URL</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'/home/joe/page.html'</span><span class="p">);</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'&lt;html&gt;....&lt;/html&gt;'</span><span class="p">);</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'http://google.com'</span><span class="p">);</span>
-<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'/home/joe/my.pdf'</span><span class="p">);</span>
-<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addCover</span><span class="p">(</span><span class="s1">'mycover.pdf'</span><span class="p">);</span>
 
 <span class="c1">// Add a cover (same sources as above are possible)</span>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addCover</span><span class="p">(</span><span class="s1">'mycover.pdf'</span><span class="p">);</span>
+
+<span class="c1">// Add a Table of contents</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addToc</span><span class="p">();</span>
 
-<span class="c1">// Save the PDF, or ...</span>
+<span class="c1">// Save the PDF</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">saveAs</span><span class="p">(</span><span class="s1">'/tmp/new.pdf'</span><span class="p">);</span>
 
-<span class="c1">// ... send to client for inline display, or ...</span>
+<span class="c1">// ... or send to client for inline display</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
 
-<span class="c1">// ... send to client as file download</span>
+<span class="c1">// ... or send to client as file download</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">'test.pdf'</span><span class="p">);</span>
 </pre></div>
 
 <h2>Setting options</h2>
 
-<p>The wkhtmltopdf binary has some global options (e.g. to set the document's DPI) and options for each PDF page (e.g. to supply a custom CSS file). Please see "wkhtmltopdf -H" to get a list of all available options.</p>
+<p>The wkhtmltopdf binary knows different types of options (please see wkhtmltopdf -H):                                      </p>
 
-<p>In addition <code>phpwkhtmltopdf</code> also supports global page options: You can set default page options that will be applied to every page you add. You can also override these defaults per page:</p>
+<ul>
+<li>global options (e.g. to set the document's DPI)<br>
+</li>
+<li>page options (e.g. to supply a custom CSS file for a page)<br>
+</li>
+<li>toc options (e.g. to set a TOC header)<br>
+</li>
+</ul><p>In addition <code>phpwkhtmltopdf</code> also supports global page options: You can set default page options that will be applied to every page you add. You can also override these defaults per page:</p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>   <span class="c1">// Set global PDF options</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>         <span class="c1">// Set global PDF options (alternative)</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setPageOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Set default page options</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="nv">$page</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Add page with options (overrides default page options)</span>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addCover</span><span class="p">(</span><span class="nv">$page</span><span class="p">,</span> <span class="nv">$options</span><span class="p">);</span>    <span class="c1">// Add cover with options (overrides default page options)</span>
+<span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addToc</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>             <span class="c1">// Add TOC with options</span>
 </pre></div>
 
 <h2>Special global options</h2>
@@ -89,7 +99,12 @@ even though a lot of features will be missing.</p>
 <code>enableEscaping</code>: Wether arguments to wkhtmltopdf should be escaped. Default is true. </li>
 </ul><h2>Error handling</h2>
 
-<p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>.</p>
+<p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>:</p>
+
+<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span>                                                                                                    
+    <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'Could not create PDF: '</span><span class="o">.</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">getError</span><span class="p">());</span>                                                  
+</pre></div>
 
 <h2>Note for Windows users</h2>
 
