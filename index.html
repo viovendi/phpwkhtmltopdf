@@ -38,7 +38,8 @@ even though a lot of features will be missing.</p>
 
 <p>This project is sponsored by <a href="http://www.peopleperhour.com">PeoplePerHour</a>.</p>
 
-<h2>Basic use</h2>
+<h2>
+<a name="basic-use" class="anchor" href="#basic-use"><span class="octicon octicon-link"></span></a>Basic use</h2>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">require_once</span><span class="p">(</span><span class="s1">'WkHtmlToPdf.php'</span><span class="p">);</span>
@@ -66,7 +67,8 @@ even though a lot of features will be missing.</p>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="s1">'test.pdf'</span><span class="p">);</span>
 </pre></div>
 
-<h2>Setting options</h2>
+<h2>
+<a name="setting-options" class="anchor" href="#setting-options"><span class="octicon octicon-link"></span></a>Setting options</h2>
 
 <p>The wkhtmltopdf binary knows different types of options (please see <code>wkhtmltopdf -H</code>):                                      </p>
 
@@ -88,7 +90,8 @@ even though a lot of features will be missing.</p>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addToc</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>             <span class="c1">// Add TOC with options</span>
 </pre></div>
 
-<h2>Special global options</h2>
+<h2>
+<a name="special-global-options" class="anchor" href="#special-global-options"><span class="octicon octicon-link"></span></a>Special global options</h2>
 
 <ul>
 <li>
@@ -97,7 +100,8 @@ even though a lot of features will be missing.</p>
 <code>tmp</code>: Path to tmp directory. Defaults to the PHP temp dir.</li>
 <li>
 <code>enableEscaping</code>: Wether arguments to wkhtmltopdf should be escaped. Default is true. </li>
-</ul><h2>Error handling</h2>
+</ul><h2>
+<a name="error-handling" class="anchor" href="#error-handling"><span class="octicon octicon-link"></span></a>Error handling</h2>
 
 <p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>:</p>
 
@@ -106,32 +110,38 @@ even though a lot of features will be missing.</p>
     <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'Could not create PDF: '</span><span class="o">.</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">getError</span><span class="p">());</span>
 </pre></div>
 
-<h2>Note for Windows users</h2>
+<h2>
+<a name="note-for-windows-users" class="anchor" href="#note-for-windows-users"><span class="octicon octicon-link"></span></a>Note for Windows users</h2>
 
 <p>If you use double quotes (<code>"</code>) or percent signs (<code>%</code>) as option values, they may get converted to spaces. You can set <code>enableEscaping</code> to false in this case. But then you have to take care of proper escaping yourself. In some cases it may be neccessary to surround your argument values with extra double quotes.</p>
 
 <p>I also found that some options don't work on Windows (tested with wkhtmltopdf 0.11 rc2), like the <code>user-style-sheet</code> option described below.</p>
 
-<h2>Full example</h2>
+<h2>
+<a name="full-example" class="anchor" href="#full-example"><span class="octicon octicon-link"></span></a>Full example</h2>
 
 <p>For me <code>wkhtmltopdf</code> seems to create best results with smart shrinking turned off. 
 But then i had scaling issues which went away if i set all margins to zero and instead
 add the margins through CSS. We can also use <code>cm</code> in CSS as this is more apropriate for print styles.</p>
 
 <div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="c1">// Create a new WKHtmlToPdf object with some global PDF options</span>
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
     <span class="s1">'no-outline'</span><span class="p">,</span>         <span class="c1">// Make Chrome not complain</span>
     <span class="s1">'margin-top'</span>    <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s1">'margin-right'</span>  <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s1">'margin-bottom'</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
     <span class="s1">'margin-left'</span>   <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
-<span class="p">);</span>
+<span class="p">));</span>
 
+<span class="c1">// Set default page options for all following pages</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setPageOptions</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
     <span class="s1">'disable-smart-shrinking'</span><span class="p">,</span>
     <span class="s1">'user-style-sheet'</span> <span class="o">=&gt;</span> <span class="s1">'pdf.css'</span><span class="p">,</span>
-<span class="p">);</span>
+<span class="p">));</span>
 
+<span class="c1">// Add a page. To override above page defaults, you could add </span>
+<span class="c1">// another $options array as second argument.</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">addPage</span><span class="p">(</span><span class="s1">'demo.html'</span><span class="p">);</span>
 
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">();</span>
