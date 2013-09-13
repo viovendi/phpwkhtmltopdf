@@ -34,14 +34,14 @@
         <p>PHP WkHtmlToPdf provides a simple and clean interface to ease PDF creation with <a href="http://code.google.com/p/wkhtmltopdf/">wkhtmltopdf</a>.
 <strong>The <a href="http://code.google.com/p/wkhtmltopdf/">wkhtmltopdf</a> binary must be installed and working on your system.</strong> The static
 binary is preferred but this class should also work with the non static version,
-even though a lot of features will be missing.</p>
+even though a lot of features will be missing. You can also use <code>composer</code> to install the binaries from <code>h4cc/wkhtmltopdf-i386</code> or <code>h4cc/wkhtmltopdf-amd64</code>.</p>
 
 <p>This project was sponsored by <a href="http://www.peopleperhour.com">PeoplePerHour</a>.</p>
 
 <h2>
 <a name="basic-use" class="anchor" href="#basic-use"><span class="octicon octicon-link"></span></a>Basic use</h2>
 
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">require_once</span><span class="p">(</span><span class="s1">'WkHtmlToPdf.php'</span><span class="p">);</span>
 
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">;</span>
@@ -81,7 +81,7 @@ even though a lot of features will be missing.</p>
 </li>
 </ul><p>In addition <code>phpwkhtmltopdf</code> also supports global page options: You can set default page options that will be applied to every page you add. You can also override these defaults per page:</p>
 
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>   <span class="c1">// Set global PDF options</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>         <span class="c1">// Set global PDF options (alternative)</span>
 <span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">setPageOptions</span><span class="p">(</span><span class="nv">$options</span><span class="p">);</span>     <span class="c1">// Set default page options</span>
@@ -100,12 +100,20 @@ even though a lot of features will be missing.</p>
 <code>tmp</code>: Path to tmp directory. Defaults to the PHP temp dir.</li>
 <li>
 <code>enableEscaping</code>: Wether arguments to wkhtmltopdf should be escaped. Default is true. </li>
-</ul><h2>
+</ul><p>If you installed <code>wkhtmltopdf</code> via composer, you have to set the <code>bin</code> path to the right binary:</p>
+
+<div class="highlight highlight-php"><pre><span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="c1">// Use `wkhtmltopdf-i386` or `wkhtmltopdf-amd64`</span>
+    <span class="s1">'bin'</span> <span class="o">=&gt;</span> <span class="s1">'path/to/vendor/bin/wkhtmltopdf-i386'</span>
+<span class="p">));</span>
+</pre></div>
+
+<h2>
 <a name="error-handling" class="anchor" href="#error-handling"><span class="octicon octicon-link"></span></a>Error handling</h2>
 
 <p><code>saveAs()</code> and <code>save()</code> will return false on error. In this case the detailed error message from wkhtmltopdf can be obtained through <code>getError()</code>:</p>
 
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'Could not create PDF: '</span><span class="o">.</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">getError</span><span class="p">());</span>
 </pre></div>
@@ -124,7 +132,7 @@ even though a lot of features will be missing.</p>
 But then i had scaling issues which went away if i set all margins to zero and instead
 add the margins through CSS. We can also use <code>cm</code> in CSS as this is more apropriate for print styles.</p>
 
-<div class="highlight"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
 <span class="c1">// Create a new WKHtmlToPdf object with some global PDF options</span>
 <span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
     <span class="s1">'no-outline'</span><span class="p">,</span>         <span class="c1">// Make Chrome not complain</span>
@@ -149,7 +157,7 @@ add the margins through CSS. We can also use <code>cm</code> in CSS as this is m
 
 <p><strong>demo.html</strong></p>
 
-<div class="highlight"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<div class="highlight highlight-html"><pre><span class="cp">&lt;!DOCTYPE html&gt;</span>
 <span class="nt">&lt;head&gt;</span>
 <span class="nt">&lt;/head&gt;</span>
 <span class="nt">&lt;body&gt;</span>
@@ -173,7 +181,7 @@ add the margins through CSS. We can also use <code>cm</code> in CSS as this is m
 
 <p><strong>pdf.css</strong></p>
 
-<div class="highlight"><pre><span class="c">/* Define page size. Requires print-area adjustment! */</span>
+<div class="highlight highlight-css"><pre><span class="c">/* Define page size. Requires print-area adjustment! */</span>
 <span class="nt">body</span> <span class="p">{</span>
     <span class="k">margin</span><span class="o">:</span>     <span class="m">0</span><span class="p">;</span>
     <span class="k">padding</span><span class="o">:</span>    <span class="m">0</span><span class="p">;</span>
