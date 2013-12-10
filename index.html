@@ -95,16 +95,22 @@ even though a lot of features will be missing. You can also use <code>composer</
 
 <ul>
 <li>
-<code>bin</code>: Path to the wkhtmltopdf binary. Defaults to <code>/usr/bin/wkhtmltopdf</code>.</li>
+<code>binPath</code>: Full path to the wkhtmltopdf binary. Required on Windows systems and optionally autodetected if not set on other OS.</li>
+<li>
+<code>binName</code>: Base name of the binary to use for autodetection. Default is <code>wkhtmltopdf</code>.</li>
 <li>
 <code>tmp</code>: Path to tmp directory. Defaults to the PHP temp dir.</li>
 <li>
-<code>enableEscaping</code>: Wether arguments to wkhtmltopdf should be escaped. Default is true. </li>
+<code>enableEscaping</code>: Whether arguments to wkhtmltopdf should be escaped. Default is true. </li>
+<li>
+<code>version9</code>: Whether to use command line syntax for wkhtmltopdf &lt; 0.10.</li>
+<li>
+<code>procEnv</code>: Optional array with environment variables for the <code>proc_open()</code> call.</li>
 </ul><p>If you installed <code>wkhtmltopdf</code> via composer, you have to set the <code>bin</code> path to the right binary:</p>
 
 <div class="highlight highlight-php"><pre><span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
     <span class="c1">// Use `wkhtmltopdf-i386` or `wkhtmltopdf-amd64`</span>
-    <span class="s1">'bin'</span> <span class="o">=&gt;</span> <span class="s1">'path/to/vendor/bin/wkhtmltopdf-i386'</span>
+    <span class="s1">'binPath'</span> <span class="o">=&gt;</span> <span class="s1">'path/to/vendor/bin/wkhtmltopdf-i386'</span>
 <span class="p">));</span>
 </pre></div>
 
@@ -117,6 +123,32 @@ even though a lot of features will be missing. You can also use <code>composer</
 <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">())</span>
     <span class="k">throw</span> <span class="k">new</span> <span class="nx">Exception</span><span class="p">(</span><span class="s1">'Could not create PDF: '</span><span class="o">.</span><span class="nv">$pdf</span><span class="o">-&gt;</span><span class="na">getError</span><span class="p">());</span>
 </pre></div>
+
+<h2>
+<a name="using-the-dynamically-linked-wkhtmltopdf-binary" class="anchor" href="#using-the-dynamically-linked-wkhtmltopdf-binary"><span class="octicon octicon-link"></span></a>Using the dynamically linked wkhtmltopdf binary</h2>
+
+<p>WORK IN PROGRESS:</p>
+
+<p>On some linux distributions <code>wkhtmltopdf</code> is available as a package. But unfortunately only the
+dynamically linked binary is included, so you need an xvfb server to create PDFs. We have
+included two workarounds for this: Either start an xvfb server from an init script (recommended)
+or let the wrapper fire up an X buffer for each PDF created.</p>
+
+<h3>
+<a name="init-script-for-xvfb" class="anchor" href="#init-script-for-xvfb"><span class="octicon octicon-link"></span></a>Init script for xvfb</h3>
+
+<p>You can use a init script as described <a href="https://coderwall.com/p/tog9eq">here</a> (Thanks to Larry Williamson). You can leave out the step where you  have to change the class. Instaed you can supply the display configuration in <code>procEnv</code>:</p>
+
+<div class="highlight highlight-php"><pre><span class="o">&lt;?</span><span class="nx">php</span>
+<span class="nv">$pdf</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">WkHtmlToPdf</span><span class="p">(</span><span class="k">array</span><span class="p">(</span>
+    <span class="s1">'procEnv'</span> <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span> <span class="s1">'DISPLAY'</span> <span class="o">=&gt;</span> <span class="s1">':0'</span> <span class="p">),</span>
+<span class="p">));</span>
+</pre></div>
+
+<h3>
+<a name="autostart-xvfb-for-each-pdf" class="anchor" href="#autostart-xvfb-for-each-pdf"><span class="octicon octicon-link"></span></a>Autostart xvfb for each PDF</h3>
+
+<p>WIP</p>
 
 <h2>
 <a name="note-for-windows-users" class="anchor" href="#note-for-windows-users"><span class="octicon octicon-link"></span></a>Note for Windows users</h2>
