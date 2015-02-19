@@ -85,7 +85,7 @@ class Pdf
     /**
      * @param array|string $options global options for wkhtmltopdf or page URL, HTML or PDF/HTML filename
      */
-    public function __construct($options=null)
+    public function __construct($options = null)
     {
         if (is_array($options)) {
             $this->setOptions($options);
@@ -101,7 +101,7 @@ class Pdf
      * @param array $options optional options for this page
      * @return Pdf the Pdf instance for method chaining
      */
-    public function addPage($input,$options=array())
+    public function addPage($input, $options = array())
     {
         $options = $this->processOptions($options);
         $options['inputArg'] = $this->processInput($input);
@@ -116,9 +116,9 @@ class Pdf
      * @param array $options optional options for the cover page
      * @return Pdf the Pdf instance for method chaining
      */
-    public function addCover($input,$options=array())
+    public function addCover($input, $options = array())
     {
-        $options['input'] = ($this->version9 ? '--' : '').'cover';
+        $options['input'] = ($this->version9 ? '--' : '') . 'cover';
         $options['inputArg'] = $this->processInput($input);
         $this->_objects[] = $options;
         return $this;
@@ -130,9 +130,9 @@ class Pdf
      * @param array $options optional options for the table of contents
      * @return Pdf the Pdf instance for method chaining
      */
-    public function addToc($options=array())
+    public function addToc($options = array())
     {
-        $options['input'] = ($this->version9 ? '--' : '')."toc";
+        $options['input'] = ($this->version9 ? '--' : '') . "toc";
         $this->_objects[] = $options;
         return $this;
     }
@@ -162,7 +162,7 @@ class Pdf
      * @param bool $inline whether to force inline display of the PDF, even if filename is present.
      * @return bool whether PDF was created successfully
      */
-    public function send($filename=null,$inline=false)
+    public function send($filename = null, $inline = false)
     {
         if (!$this->_isCreated && !$this->createPdf()) {
             return false;
@@ -177,13 +177,13 @@ class Pdf
      * @param array $options list of global PDF options to set as name/value pairs
      * @return Pdf the Pdf instance for method chaining
      */
-    public function setOptions($options=array())
+    public function setOptions($options = array())
     {
         $options = $this->processOptions($options);
-        foreach ($options as $key=>$val) {
+        foreach ($options as $key => $val) {
             if (is_int($key)) {
                 $this->_options[] = $val;
-            } elseif ($key[0]!=='_' && property_exists($this, $key)) {
+            } elseif ($key[0] !== '_' && property_exists($this, $key)) {
                 $this->$key = $val;
             } else {
                 $this->_options[$key] = $val;
@@ -197,7 +197,7 @@ class Pdf
      */
     public function getCommand()
     {
-        if ($this->_command===null) {
+        if ($this->_command === null) {
             $options = $this->commandOptions;
             if (!isset($options['command'])) {
                 $options['command'] = $this->binary;
@@ -220,10 +220,24 @@ class Pdf
      */
     public function getPdfFilename()
     {
-        if ($this->_tmpPdfFile===null) {
+        if ($this->_tmpPdfFile === null) {
             $this->_tmpPdfFile = new File('', '.pdf', self::TMP_PREFIX, $this->tmpDir);
         }
         return $this->_tmpPdfFile->getFileName();
+    }
+
+    /**
+     * @return binary|false data of the temporary PDF file
+     */
+    public function getPdfContent()
+    {
+        $tmpFile = $this->getPdfFilename();
+
+        if (!$this->_isCreated && !$this->createPdf()) {
+            return false;
+        }
+
+        return file_get_contents($tmpFile);
     }
 
     /**
@@ -246,7 +260,7 @@ class Pdf
         $command->addArg($fileName, null, true);    // Always escape filename
         if (!$command->execute()) {
             $this->_error = $command->getError();
-            if (!(file_exists($fileName) && filesize($fileName)!==0 && $this->ignoreWarnings)) {
+            if (!(file_exists($fileName) && filesize($fileName) !== 0 && $this->ignoreWarnings)) {
                 return false;
             }
         }
@@ -271,11 +285,11 @@ class Pdf
      * @param array $options list of options as name/value pairs
      * @return array options with raw content converted to tmp files where neccessary
      */
-    protected function processOptions($options=array())
+    protected function processOptions($options = array())
     {
-        foreach ($options as $key=>$val) {
+        foreach ($options as $key => $val) {
             $urlRequired = preg_match('/^(header|footer)-html$/', $key);
-            if ($urlRequired && !(is_file($val) || preg_match('/^(https?:)?\/\//i',$val) || $val===strip_tags($val))) {
+            if ($urlRequired && !(is_file($val) || preg_match('/^(https?:)?\/\//i', $val) || $val === strip_tags($val))) {
                 $options[$key] = new File($val, '.html', self::TMP_PREFIX, $this->tmpDir);
             }
         }
