@@ -15,7 +15,7 @@ use mikehaertl\tmp\File;
 class Pdf
 {
     // Regular expression to detect HTML strings
-    const REGEX_HTML = '/<html/i';
+    const REGEX_HTML = '/^</i';
 
     // prefix for tmp files
     const TMP_PREFIX = 'tmp_wkhtmlto_pdf_';
