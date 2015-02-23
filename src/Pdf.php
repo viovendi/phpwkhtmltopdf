@@ -124,6 +124,23 @@ class Pdf
         return $this;
     }
 
+    public function addHeader($input, $options = array())
+    {
+        $options['input'] = '--header-html';
+        $options['inputArg'] = $this->processInput($input);
+        $this->_objects[] = $options;
+        return $this;
+    }
+
+
+    public function addFooter($input, $options = array())
+    {
+        $options['input'] = '--footer-html';
+        $options['inputArg'] = $this->processInput($input);
+        $this->_objects[] = $options;
+        return $this;
+    }
+
     /**
      * Add a TOC object to the output
      *
