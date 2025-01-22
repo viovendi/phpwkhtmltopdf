@@ -14,7 +14,7 @@
     "require": {
         "php": ">=5.0.0",
         "mikehaertl/php-tmpfile": "~1.0.0",
-        "mikehaertl/php-shellcommand": "~1.0.4"
+        "mikehaertl/php-shellcommand": "~1.6.4"
     },
     "autoload": {
         "psr-4": {
